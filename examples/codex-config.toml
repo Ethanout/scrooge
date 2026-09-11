@@ -1,11 +1,11 @@
 # Add this section to %USERPROFILE%/.codex/config.toml.
-# Paste the API key here in your local Codex config. Do not commit the key.
+# The launcher decrypts this Windows DPAPI file for the current user.
 
 [mcp_servers.scrooge]
 command = "C:/path/to/node.exe"
-args = ["C:/path/to/scrooge/dist/index.js"]
+args = ["C:/path/to/scrooge/scripts/scrooge-launcher.mjs"]
 startup_timeout_sec = 120
 tool_timeout_sec = 3600
 
 [mcp_servers.scrooge.env]
-DEEPSEEK_API_KEY = "sk-paste-your-key-here"
+SCROOGE_AUTH_FILE = "C:/Users/your-name/AppData/Local/scrooge-mcp/auth.dpapi"

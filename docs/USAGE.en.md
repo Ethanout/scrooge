@@ -15,7 +15,9 @@ npm install
 npm run build
 ```
 
-Add `examples/codex-config.toml` to `%USERPROFILE%/.codex/config.toml`, replace all paths with absolute paths, and put the real API key directly in `[mcp_servers.scrooge.env]` as `DEEPSEEK_API_KEY`. Codex desktop passes it when starting the MCP server, so no PowerShell environment variable is needed. Never commit that config file.
+Add `examples/codex-config.toml` to `%USERPROFILE%/.codex/config.toml` and replace all paths with absolute paths. Run `powershell -File examples/create-auth.ps1 -ApiKey "sk-your-key"` to create the current-user Windows DPAPI credential at `%LOCALAPPDATA%/scrooge-mcp/auth.dpapi`. Do not put the real API key in the Codex config.
+
+Point `command` to Node.js, point `args` to `scripts/scrooge-launcher.mjs`, and set `SCROOGE_AUTH_FILE` to the `.dpapi` file. The Codex config then contains only the credential-file location, not the secret.
 
 ## Tool workflow
 
