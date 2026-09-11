@@ -1,0 +1,11 @@
+# Add this section to %USERPROFILE%/.codex/config.toml.
+# Keep DEEPSEEK_API_KEY in the environment of Codex desktop.
+
+[mcp_servers.scrooge]
+command = "C:/path/to/node.exe"
+args = ["C:/path/to/scrooge/dist/index.js"]
+startup_timeout_sec = 120
+tool_timeout_sec = 3600
+
+[mcp_servers.scrooge.env]
+DEEPSEEK_API_KEY = "${DEEPSEEK_API_KEY}"
