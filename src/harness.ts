@@ -62,10 +62,13 @@ class PersistentDshSession {
 
   static async start(config: ScroogeConfig, options: HarnessRunOptions): Promise<PersistentDshSession> {
     const workspaceRoot = options.workspaceRoot;
-    const command = process.platform === "win32" && !config.dshCommand.endsWith(".cmd")
-      ? `${config.dshCommand}.cmd`
+    const command = process.platform === "win32" && config.dshCommand === "dsh"
+      ? "powershell.exe"
       : config.dshCommand;
-    const child = spawn(command, ["--profile", "acp"], {
+    const args = command === "powershell.exe"
+      ? ["-NoProfile", "-NonInteractive", "-ExecutionPolicy", "Bypass", "-Command", "& dsh --profile acp"]
+      : ["--profile", "acp"];
+    const child = spawn(command, args, {
       cwd: workspaceRoot,
       env: {
         ...process.env,
@@ -77,7 +80,7 @@ class PersistentDshSession {
       windowsHide: true,
     });
     const stderr = child.stderr;
-    stderr?.on("data", () => undefined);
+    stderr?.on("data", chunk => { process.stderr.write(`[dsh] ${String(chunk)}`); });
     const input = Writable.toWeb(child.stdin!) as WritableStream<Uint8Array>;
     const output = Readable.toWeb(child.stdout!) as ReadableStream<Uint8Array>;
     const stream = acp.ndJsonStream(input, output);

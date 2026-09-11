@@ -15,7 +15,7 @@ npm install
 npm run build
 ```
 
-Add `examples/codex-config.toml` to `%USERPROFILE%/.codex/config.toml` and replace all paths with absolute paths. Run `powershell -File examples/create-auth.ps1 -ApiKey "sk-your-key"` to create the current-user Windows DPAPI credential at `%LOCALAPPDATA%/scrooge-mcp/auth.dpapi`. Do not put the real API key in the Codex config.
+Add `examples/codex-config.toml` to `%USERPROFILE%/.codex/config.toml` and replace all paths with absolute paths. Run `powershell -File examples/create-auth.ps1` to create the current-user Windows DPAPI credential at `%LOCALAPPDATA%/scrooge-mcp/auth.dpapi`. Do not put the real API key in the Codex config.
 
 Point `command` to Node.js, point `args` to `scripts/scrooge-launcher.mjs`, and set `SCROOGE_AUTH_FILE` to the `.dpapi` file. The Codex config then contains only the credential-file location, not the secret.
 

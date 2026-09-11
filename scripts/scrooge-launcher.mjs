@@ -11,9 +11,9 @@ const authFile = process.env.SCROOGE_AUTH_FILE ?? join(localAppData, "scrooge-mc
 try {
   const exec = promisify(execFile);
   const command = "$s = ConvertTo-SecureString -String (Get-Content -Raw -LiteralPath $args[0]); $p = [System.Net.NetworkCredential]::new('', $s).Password; [Console]::Out.Write($p)";
-  const result = await exec("powershell.exe", ["-NoProfile", "-NonInteractive", "-ExecutionPolicy", "Bypass", "-Command", command, authFile], { windowsHide: true, maxBuffer: 16 * 1024 });
+  const result = await exec("powershell.exe", ["-NoProfile", "-NonInteractive", "-ExecutionPolicy", "Bypass", "-Command", command], { env: { ...process.env, SCROOGE_AUTH_FILE: authFile }, windowsHide: true, maxBuffer: 16 * 1024 });
   const key = result.stdout.trim();
-  if (key.length === 0) throw new Error("the decrypted key is empty");
+  if (key.length === 0) throw new Error("the decrypted key is empty; recreate it with examples/create-auth.ps1");
   start(key);
 } catch (error) {
   console.error(`Scrooge DPAPI auth file could not be read: ${authFile}`);

@@ -17,7 +17,7 @@ npm run build
 
 将 `examples/codex-config.toml` 加入 `%USERPROFILE%/.codex/config.toml`，替换全部路径为绝对路径。推荐使用下方 launcher 方式，不要把真实 API key 写入 Codex 配置。
 
-运行 `powershell -File examples/create-auth.ps1 -ApiKey "sk-your-key"`，在 `%LOCALAPPDATA%/scrooge-mcp/auth.dpapi` 创建当前 Windows 用户专属的加密凭据。然后在 Codex 配置中将 `command` 指向 Node.js、`args` 指向 `scripts/scrooge-launcher.mjs`，并把 `SCROOGE_AUTH_FILE` 设置为该文件路径。Codex 配置本身不保存密钥。
+运行 `powershell -File examples/create-auth.ps1`，在 `%LOCALAPPDATA%/scrooge-mcp/auth.dpapi` 创建当前 Windows 用户专属的加密凭据。然后在 Codex 配置中将 `command` 指向 Node.js、`args` 指向 `scripts/scrooge-launcher.mjs`，并把 `SCROOGE_AUTH_FILE` 设置为该文件路径。Codex 配置本身不保存密钥。
 
 ## 工具调用
 
