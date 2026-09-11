@@ -11,12 +11,11 @@ Scrooge 是本地 `stdio` MCP 服务。Codex desktop 通过 MCP 调用 Scrooge�
 ```powershell
 npm install --global @deepseek-ai/dsh@0.1.5-rc.2
 dsh --version
-$env:DEEPSEEK_API_KEY = "sk-your-key"
 npm install
 npm run build
 ```
 
-将 `examples/codex-config.toml` 加入 `%USERPROFILE%/.codex/config.toml`，并替换全部路径为绝对路径。API key 只通过环境变量提供。
+将 `examples/codex-config.toml` 加入 `%USERPROFILE%/.codex/config.toml`，替换全部路径为绝对路径，并直接把真实 API key 写入 `[mcp_servers.scrooge.env]` 的 `DEEPSEEK_API_KEY`。桌面端会在启动 MCP 时传入该值，不需要 PowerShell 环境变量。不要提交这个配置文件。
 
 ## 工具调用
 

@@ -1,5 +1,5 @@
 # Add this section to %USERPROFILE%/.codex/config.toml.
-# Keep DEEPSEEK_API_KEY in the environment of Codex desktop.
+# Paste the API key here in your local Codex config. Do not commit the key.
 
 [mcp_servers.scrooge]
 command = "C:/path/to/node.exe"
@@ -8,4 +8,4 @@ startup_timeout_sec = 120
 tool_timeout_sec = 3600
 
 [mcp_servers.scrooge.env]
-DEEPSEEK_API_KEY = "${DEEPSEEK_API_KEY}"
+DEEPSEEK_API_KEY = "sk-paste-your-key-here"

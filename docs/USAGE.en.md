@@ -11,12 +11,11 @@ The default concurrency is two tasks. Terminal states are persisted. On process 
 ```powershell
 npm install --global @deepseek-ai/dsh@0.1.5-rc.2
 dsh --version
-$env:DEEPSEEK_API_KEY = "sk-your-key"
 npm install
 npm run build
 ```
 
-Add `examples/codex-config.toml` to `%USERPROFILE%/.codex/config.toml`, replacing all paths with absolute paths. Pass the API key only through the environment.
+Add `examples/codex-config.toml` to `%USERPROFILE%/.codex/config.toml`, replace all paths with absolute paths, and put the real API key directly in `[mcp_servers.scrooge.env]` as `DEEPSEEK_API_KEY`. Codex desktop passes it when starting the MCP server, so no PowerShell environment variable is needed. Never commit that config file.
 
 ## Tool workflow
 

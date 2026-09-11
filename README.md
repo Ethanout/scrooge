@@ -6,16 +6,15 @@ Scrooge is a developer-preview integration. DSH may introduce breaking changes. 
 
 ## 中文使用方法
 
-要求 Node.js `22.19.0+`。安装 DSH，设置 API key，然后构建：
+要求 Node.js `22.19.0+`。安装 DSH，然后构建：
 
 ```powershell
 npm install --global @deepseek-ai/dsh@0.1.5-rc.2
-$env:DEEPSEEK_API_KEY = "sk-your-key"
 npm install
 npm run build
 ```
 
-将 [`examples/codex-config.toml`](examples/codex-config.toml) 加入 `%USERPROFILE%/.codex/config.toml`，并替换为 Node.js 和 `dist/index.js` 的绝对路径。Codex 自带 Node.js `24.19.0` 可以使用。
+将 [`examples/codex-config.toml`](examples/codex-config.toml) 加入 `%USERPROFILE%/.codex/config.toml`，替换 Node.js 和 `dist/index.js` 的绝对路径，并把 `DEEPSEEK_API_KEY` 改为真实密钥。Codex desktop 会在启动 MCP 时传入该值，不依赖 PowerShell 环境变量。不要提交包含真实密钥的配置文件。
 
 调用流程：调用 `submit_task`，读取 `recommended_wait_ms`，用该值调用一次 `wait_task`；超时后使用快照中的新等待建议，或调用 `get_task`。不要高频轮询。
 
@@ -36,13 +35,13 @@ npm run build
 5. submit_task 返回后读取 recommended_wait_ms，并调用一次 wait_task，不要循环调用 get_task。
 6. wait_task 超时后使用返回快照中的 recommended_wait_ms 再等待。
 7. succeeded 时检查 result、changed files 和 verification；其他终态向用户说明 error。
-8. 不要把 DEEPSEEK_API_KEY 放入 task、工具参数、日志或回复。
+8. 不要把 DEEPSEEK_API_KEY 放入 task、工具参数、日志或回复；它只应出现在本机 Codex MCP 的 env 配置中。
 9. 不要声称缓存命中率或费用是精确值，除非服务返回对应计量字段。
 ```
 
 ## English Usage
 
-Node.js `22.19.0+` is required. Install DSH, set `DEEPSEEK_API_KEY`, run `npm install`, then `npm run build`. Copy [`examples/codex-config.toml`](examples/codex-config.toml) into `%USERPROFILE%/.codex/config.toml` and replace paths with absolute paths.
+Node.js `22.19.0+` is required. Install DSH, run `npm install`, then `npm run build`. Copy [`examples/codex-config.toml`](examples/codex-config.toml) into `%USERPROFILE%/.codex/config.toml`, replace paths with absolute paths, and put the API key directly in the MCP server's `env` section. Codex desktop then passes it when starting the MCP server, without a PowerShell environment variable. Never commit a config file containing the key.
 
 Workflow: call `submit_task`, read `recommended_wait_ms`, call `wait_task` once, then use the new recommendation after a timeout. Do not poll frequently. Permission profiles are `read_only`, `workspace_write` (default), and `unrestricted`; destructive actions additionally require `allowDestructive: true`. These are policy checks, not an OS sandbox.
 
@@ -61,7 +60,7 @@ You may delegate large coding tasks to the DeepSeek sub-agent through Scrooge MC
 5. After submit_task, read recommended_wait_ms and call wait_task once. Do not repeatedly poll with get_task.
 6. If wait_task times out, wait using the returned recommended_wait_ms.
 7. On succeeded, inspect result, changed files, and verification. On other terminal states, report error.
-8. Never put DEEPSEEK_API_KEY in task text, tool arguments, logs, or replies.
+8. Never put DEEPSEEK_API_KEY in task text, tool arguments, logs, or replies; keep it only in the local Codex MCP `env` configuration.
 9. Do not claim exact cache-hit rates or cost unless the service provides those billing fields.
 ```
 
