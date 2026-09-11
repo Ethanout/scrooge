@@ -63,15 +63,16 @@ class PersistentDshSession {
   static async start(config: ScroogeConfig, options: HarnessRunOptions): Promise<PersistentDshSession> {
     const workspaceRoot = options.workspaceRoot;
     const command = process.platform === "win32" && config.dshCommand === "dsh"
-      ? "powershell.exe"
+      ? windowsPowerShell()
       : config.dshCommand;
-    const args = command === "powershell.exe"
+    const args = process.platform === "win32" && config.dshCommand === "dsh"
       ? ["-NoProfile", "-NonInteractive", "-ExecutionPolicy", "Bypass", "-Command", "& dsh --profile acp"]
       : ["--profile", "acp"];
     const child = spawn(command, args, {
       cwd: workspaceRoot,
       env: {
         ...process.env,
+        ...(command !== config.dshCommand ? { PSModulePath: `${process.env.SystemRoot ?? "C:\\Windows"}\\System32\\WindowsPowerShell\\v1.0\\Modules` } : {}),
         DSH_HOME: config.dshHome,
         DSH_PERMISSION_MODE: dshPermissionMode(options),
         ...(config.telemetryDisabled ? { DSH_TELEMETRY_DISABLED: "1" } : {}),
@@ -166,6 +167,11 @@ class PersistentDshSession {
     if (!this.#process.killed) this.#process.kill();
     await once(this.#process, "close").catch(() => undefined);
   }
+}
+
+function windowsPowerShell(): string {
+  const systemRoot = process.env.SystemRoot ?? process.env.SYSTEMROOT;
+  return systemRoot === undefined ? "powershell.exe" : `${systemRoot}\\System32\\WindowsPowerShell\\v1.0\\powershell.exe`;
 }
 
 function dshPermissionMode(options: HarnessRunOptions): string {
